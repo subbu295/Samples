@@ -1,0 +1,44 @@
+using System;
+					
+public class Program
+{
+	//You have an array of integers, and for each index you want to find the product of every integer except the integer at that index.
+	public static void Main()
+	{		
+		int [] input = {2};		
+		
+		foreach(int n in GetProductofAllIntsExceptAtIndex(input))
+		{
+			Console.WriteLine(n);
+		}		
+	}
+	
+	public static int[] GetProductofAllIntsExceptAtIndex(int[] InputArray)
+	{
+		int arrayLength = InputArray.Length;
+		
+		if (arrayLength < 2)
+		{
+			throw new ArgumentException("To product number of numbers required at least two numbers.", InputArray.ToString());
+		}
+		
+		int [] prodArray = new int[arrayLength];
+				
+		int before = 1;
+		int after = 1;		
+		for(int i=arrayLength - 1; i>=0; i--)
+		{			
+						
+			prodArray[i] = after;
+			after *= InputArray[i];
+		}		
+		
+		for(int i=0; i < arrayLength;i++)
+		{
+			prodArray[i] = prodArray[i] * before;
+			before *= InputArray[i];			
+		}
+		
+		return prodArray;
+	}
+}
