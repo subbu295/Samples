@@ -1,0 +1,73 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+					
+public class Program
+{
+	public static void Main()
+	{		
+		List<Meeting> meetings =   new List<Meeting>(){
+			
+			new Meeting(10, 12),
+			new Meeting(0, 1), 
+			new Meeting(3, 5), 
+			new Meeting(4, 8), 
+			new Meeting(9, 10)
+		};
+		
+		foreach(var meeting in MergeRanges(meetings))
+		{
+			Console.WriteLine(meeting);
+		}
+		
+		Console.WriteLine("---");
+		
+		foreach(var meeting in meetings)
+		{
+			Console.WriteLine(meeting);
+		}
+		
+	   
+	}
+	
+	public static List<Meeting> MergeRanges(List<Meeting> meetings)
+	{
+		var sortMeetings = meetings.OrderBy(m => m.StartTime).ToList();
+		
+		var mergeMeeting = new List<Meeting>() { sortMeetings[0] };
+		
+		foreach(var currentMeeting in sortMeetings)
+		{
+			var lastMergingTime = mergeMeeting.Last();
+			if (lastMergingTime.EndTime >= currentMeeting.StartTime)
+			{
+				lastMergingTime.EndTime = Math.Max(lastMergingTime.EndTime, currentMeeting.EndTime);
+			}
+			else
+			{
+				mergeMeeting.Add(currentMeeting);
+			}
+		}
+				
+		return mergeMeeting;
+	}
+}
+
+public class Meeting
+{
+    public int StartTime { get; set; }
+
+    public int EndTime { get; set; }
+
+    public Meeting(int startTime, int endTime)
+    {
+        // Number of 30 min blocks past 9:00 am
+        StartTime = startTime;
+        EndTime = endTime;
+    }
+
+    public override string ToString()
+    {
+        return "(" + StartTime + ", " + EndTime + ")";
+    }	
+}
